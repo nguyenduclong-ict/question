@@ -50,33 +50,32 @@ window.onload = () => {
   };
 
   const onBtnNoClick = function () {
-    btnNo.style.position = "fixed";
+    const _btnNo = this;
+    const _btnOk = btnNo !== _btnNo ? btnNo : btnOk;
+    _btnNo.style.position = "fixed";
     clickedCounts++;
 
-    if (switchAfter === clickedCounts) {
-      const top = btnNo.getBoundingClientRect().top,
-        left = btnNo.getBoundingClientRect().left;
+    if (switchAfter === clickedCounts && all !== "no") {
+      const top = _btnNo.getBoundingClientRect().top,
+        left = _btnNo.getBoundingClientRect().left;
+      _btnNo.style.top = _btnOk.getBoundingClientRect().top + "px";
+      _btnNo.style.left = _btnOk.getBoundingClientRect().left + "px";
 
-      console.log(top, left);
-
-      btnNo.style.top = btnOk.getBoundingClientRect().top + "px";
-      btnNo.style.left = btnOk.getBoundingClientRect().left + "px";
-
-      btnOk.style.position = "fixed";
-      btnOk.style.top = top + "px";
-      btnOk.style.left = left + "px";
+      _btnOk.style.position = "fixed";
+      _btnOk.style.top = top + "px";
+      _btnOk.style.left = left + "px";
 
       clickedCounts = 0;
       switchAfter = Math.floor(Math.random() * 5) + 1;
     } else {
-      btnNo.style.top =
-        Math.max(Math.random() * window.innerHeight - btnNo.clientHeight, 0) +
+      _btnNo.style.top =
+        Math.max(Math.random() * window.innerHeight - _btnNo.clientHeight, 0) +
         "px";
-      btnNo.style.left =
-        Math.max(Math.random() * window.innerWidth - btnNo.clientWidth, 0) +
+      _btnNo.style.left =
+        Math.max(Math.random() * window.innerWidth - _btnNo.clientWidth, 0) +
         "px";
     }
-    animateCSS(btnNo, randomEffect());
+    animateCSS(_btnNo, randomEffect());
   };
 
   btnOk.addEventListener("click", all === "no" ? onBtnNoClick : onBtnOkClick);
