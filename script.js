@@ -1,3 +1,4 @@
+let yes = false;
 let clickedCounts = 0;
 let switchAfter = Math.floor(Math.random() * 5) + 1;
 
@@ -5,14 +6,14 @@ window.onload = () => {
   const search = new URLSearchParams(window.location.search);
   const m = search.get("m");
   const s = search.get("ok") || "HIHI";
-  const okeText = search.get("ok_text") || "Có";
-  const noText = search.get("no_text") || "Không";
+  const okeText = search.get("bok") || "Có";
+  const noText = search.get("bno") || "Không";
+  const all = search.get("all");
   const text = document.querySelector("#text");
   const btnOk = document.querySelector("#btn-ok"),
     btnNo = document.querySelector("#btn-no");
 
-  console.log({ btnOk, btnNo });
-
+  document.hasFocus() && btnOk.focus();
   const randomEffect = () => {
     const effects = [
       "bounce",
@@ -36,7 +37,8 @@ window.onload = () => {
   btnOk.value = okeText;
   btnNo.value = noText;
 
-  btnOk.addEventListener("click", function () {
+  const onBtnOkClick = function () {
+    yes = true;
     text.innerHTML = s;
     text.style["font-size"] = "128px";
     btnNo.style.display = "none";
@@ -45,13 +47,12 @@ window.onload = () => {
       animateCSS(text, randomEffect()).then(loop);
     };
     loop();
-  });
+  };
 
-  btnNo.addEventListener("click", function () {
+  const onBtnNoClick = function () {
     btnNo.style.position = "fixed";
     clickedCounts++;
 
-    console.log(switchAfter, clickedCounts);
     if (switchAfter === clickedCounts) {
       const top = btnNo.getBoundingClientRect().top,
         left = btnNo.getBoundingClientRect().left;
@@ -76,7 +77,10 @@ window.onload = () => {
         "px";
     }
     animateCSS(btnNo, randomEffect());
-  });
+  };
+
+  btnOk.addEventListener("click", all === "no" ? onBtnNoClick : onBtnOkClick);
+  btnNo.addEventListener("click", all === "ok" ? onBtnOkClick : onBtnNoClick);
 };
 
 const animateCSS = (element, animation, prefix = "animate__") =>
