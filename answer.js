@@ -17,21 +17,41 @@ var app = new Vue({
   data() {
     return {
       answers: [],
-      db: null,
+      loggedIn: false,
     };
   },
 
-  created() {
-    this.db = firebase.firestore();
-    this.db
-      .collection("answer")
-      .get()
-      .then((querySnapshot) => {
-        const answers = [];
-        querySnapshot.forEach((doc) => {
-          answers.push(doc.data());
+  created() {},
+
+  methods: {
+    destroy() {
+      this.$destroy();
+      this.$el.parentNode.removeChild(this.$el);
+    },
+    login() {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      return firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(() => {
+          this.loggedIn = true;
+          this.fetchListAnswers();
+        })
+        .catch(() => {
+          this.destroy();
         });
-        this.answers = answers;
-      });
+    },
+    fetchListAnswers() {
+      const db = firebase.firestore();
+      db.collection("answer")
+        .get()
+        .then((querySnapshot) => {
+          const answers = [];
+          querySnapshot.forEach((doc) => {
+            answers.push(doc.data());
+          });
+          this.answers = answers;
+        });
+    },
   },
 });

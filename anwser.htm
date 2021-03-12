@@ -12,6 +12,7 @@
     <!-- SCRIPT -->
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-firestore.js"></script>
 
     <script>
@@ -32,6 +33,10 @@
   </head>
   <body>
     <div id="app">
+      <div>
+        <button v-if="!loggedIn" @click="login">login</button>
+        <button v-else @click="logout">logout</button>
+      </div>
       <table>
         <thead>
           <th>Id</th>
