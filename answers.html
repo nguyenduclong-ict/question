@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Answer</title>
+    <link rel="stylesheet" href="./css/table.css" />
+    <link rel="stylesheet" href="./css/answer.css" />
+
+    <script src="https://unpkg.com/vue"></script>
+    <!-- SCRIPT -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-firestore.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      var firebaseConfig = {
+        apiKey: "AIzaSyCmF5wtJfHpA0cXJ0ufCPFOpaKmPbq6cgw",
+        authDomain: "fall-in-love-f8235.firebaseapp.com",
+        projectId: "fall-in-love-f8235",
+        storageBucket: "fall-in-love-f8235.appspot.com",
+        messagingSenderId: "349134923603",
+        appId: "1:349134923603:web:f8a3e45c4ec16389d2a3a6",
+        measurementId: "G-4N4JDPX6MP",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <div
+        style="
+          width: 100%;
+          margin-bottom: 32px;
+          display: flex;
+          justify-content: flex-end;
+        "
+      >
+        <button v-if="!loggedIn" @click="handleLogin">login</button>
+        <button v-else @click="logout">logout</button>
+      </div>
+      <table v-if="loggedIn">
+        <thead>
+          <th>Id</th>
+          <th>Question</th>
+          <th>Message</th>
+          <th>Yes</th>
+          <th>No</th>
+          <th>Time</th>
+          <th>Ip</th>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(answer, index) in answers"
+            :key="answer.id ? answer.id + '-' + index : index"
+          >
+            <td>{{answer.id}}</td>
+            <td>{{answer.q}}</td>
+            <td>{{answer.m}}</td>
+            <td>{{answer.yes}}</td>
+            <td>{{answer.no}}</td>
+            <td>{{answer.date | date}}</td>
+            <td>{{answer.ip && answer.ip.ip}}</td>
+          </tr>
+        </tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
+    <script src="./js/answers.js" type="module"></script>
+  </body>
+</html>

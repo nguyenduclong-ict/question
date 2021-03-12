@@ -1,12 +1,13 @@
 let yes = false;
 let clickedCounts = 0;
 let switchAfter = Math.floor(Math.random() * 5) + 1;
-let falseClicks = 0;
+let noCounts = 0;
+let yesCounts = 0;
 let saved = false;
 let ip;
 
 async function getIp() {
-  return fetch("https://ipinfo.io/json", {
+  return fetch("https://ipinfo.io/json?token=c2f8f3a72345dc", {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   }).then((response) => response.json());
@@ -31,13 +32,13 @@ window.onload = () => {
   function saveAnswer() {
     if (firebase) {
       const db = firebase.firestore();
-      db.collection("answer")
+      db.collection("answers")
         .add({
           id,
           q,
           m,
-          falseClicks,
-          result: yes,
+          yes: yesCounts,
+          no: noCounts,
           date: new Date(),
           ip,
         })
@@ -76,7 +77,7 @@ window.onload = () => {
   btnNo.value = noText;
 
   const onBtnOkClick = function () {
-    yes = true;
+    yesCounts++;
     text.innerHTML = m;
     text.style["font-size"] = "128px";
     btnNo.style.display = "none";
@@ -93,7 +94,7 @@ window.onload = () => {
     const _btnOk = btnNo !== _btnNo ? btnNo : btnOk;
     _btnNo.style.position = "fixed";
     clickedCounts++;
-    falseClicks++;
+    noCounts++;
 
     if (switchAfter === clickedCounts && all !== "no") {
       const top = _btnNo.getBoundingClientRect().top,

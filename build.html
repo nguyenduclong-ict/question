@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tạo câu hỏi</title>
+    <script src="https://unpkg.com/vue"></script>
+
+    <style>
+      form label,
+      form input,
+      form textarea {
+        min-width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <form action="#">
+        <label for="fname">Câu hỏi:</label>
+        <br />
+        <textarea v-model="question" type="text"></textarea>
+        <br />
+        <label>Tin nhắn:</label>
+        <br />
+        <textarea v-model="message"></textarea>
+        <br />
+        <label>Id (Dùng để xem câu trả lời):</label>
+        <br />
+        <input v-model="id" type="text" />
+        <br />
+        <br />
+        <button type="button" @click="copy">Copy link</button>
+        <span v-if="copied">Đã sao chép</span>
+      </form>
+      <br />
+      <br />
+      link:
+      <a :href="link" target="__blank">{{link}}</a>
+    </div>
+    <script src="./js/build.js"></script>
+  </body>
+</html>
