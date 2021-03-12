@@ -1,17 +1,55 @@
 let yes = false;
 let clickedCounts = 0;
 let switchAfter = Math.floor(Math.random() * 5) + 1;
+let falseClicks = 0;
+let saved = false;
+let ip;
+
+async function getIp() {
+  return fetch("https://ipinfo.io/json", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  }).then((response) => response.json());
+}
 
 window.onload = () => {
   const search = new URLSearchParams(window.location.search);
-  const m = search.get("m");
-  const s = search.get("ok") || "HIHI";
-  const okeText = search.get("bok") || "Có";
-  const noText = search.get("bno") || "Không";
+  const id = search.get("id");
+  const q = search.get("q");
+  const m = search.get("m") || "HIHI";
+  const yesText = search.get("yt") || "Có";
+  const noText = search.get("nt") || "Không";
   const all = search.get("all");
   const text = document.querySelector("#text");
   const btnOk = document.querySelector("#btn-ok"),
     btnNo = document.querySelector("#btn-no");
+
+  getIp().then((ipData) => {
+    ip = ipData;
+  });
+
+  function saveAnswer() {
+    if (firebase) {
+      const db = firebase.firestore();
+      db.collection("answer")
+        .add({
+          id,
+          q,
+          m,
+          falseClicks,
+          result: yes,
+          date: new Date(),
+          ip,
+        })
+        .then(() => {
+          saved = true;
+        });
+    }
+  }
+
+  window.onbeforeunload = function () {
+    !saved && saveAnswer();
+  };
 
   document.hasFocus() && btnOk.focus();
   const randomEffect = () => {
@@ -33,16 +71,17 @@ window.onload = () => {
   };
 
   animateCSS(text, randomEffect());
-  text.innerHTML = m;
-  btnOk.value = okeText;
+  text.innerHTML = q;
+  btnOk.value = yesText;
   btnNo.value = noText;
 
   const onBtnOkClick = function () {
     yes = true;
-    text.innerHTML = s;
+    text.innerHTML = m;
     text.style["font-size"] = "128px";
     btnNo.style.display = "none";
     btnOk.style.display = "none";
+    saveAnswer();
     const loop = async () => {
       animateCSS(text, randomEffect()).then(loop);
     };
@@ -54,6 +93,7 @@ window.onload = () => {
     const _btnOk = btnNo !== _btnNo ? btnNo : btnOk;
     _btnNo.style.position = "fixed";
     clickedCounts++;
+    falseClicks++;
 
     if (switchAfter === clickedCounts && all !== "no") {
       const top = _btnNo.getBoundingClientRect().top,

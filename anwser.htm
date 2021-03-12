@@ -4,32 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fall In Love</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <div id="text"></div>
-    <div class="btn-wrapper">
-      <input type="button" id="btn-no" value="Không" />
-      <input
-        type="button"
-        id="btn-ok"
-        value="Có"
-        class="animate__animated animate__tada animate__infinite"
-      />
-    </div>
+    <title>Answer</title>
+    <link rel="stylesheet" href="./table.css" />
+    <link rel="stylesheet" href="./answer.css" />
 
-    <!-- <div id="copyright">Nguyễn Đức Long</div> -->
-
+    <script src="https://unpkg.com/vue"></script>
     <!-- SCRIPT -->
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
@@ -50,6 +29,36 @@
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
     </script>
-    <script src="./script.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <table>
+        <thead>
+          <th>Id</th>
+          <th>Question</th>
+          <th>Message</th>
+          <th>Answer</th>
+          <th>False Clicked</th>
+          <th>Time</th>
+          <th>Ip</th>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(answer, index) in answers"
+            :key="answer.id ? answer.id + '-' + index : index"
+          >
+            <td>{{answer.id}}</td>
+            <td>{{answer.q}}</td>
+            <td>{{answer.m}}</td>
+            <td>{{answer.result ? 'yes' : 'no'}}</td>
+            <td>{{answer.falseClicks}}</td>
+            <td>{{answer.date | date}}</td>
+            <td>{{answer.ip && answer.ip.ip}}</td>
+          </tr>
+        </tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
+    <script src="./answer.js"></script>
   </body>
 </html>
