@@ -25,6 +25,8 @@ window.onload = () => {
   const btnOk = document.querySelector("#btn-ok"),
     btnNo = document.querySelector("#btn-no");
 
+  document.title = q;
+
   getIp().then((ipData) => {
     ip = ipData;
   });
